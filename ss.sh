@@ -19,7 +19,9 @@ elif test $1 = nb; then
 # Initiate sphinx-autobuild
 elif test $1 = ab; then
     python -mwebbrowser http://127.0.0.1:8000/
-    sphinx-autobuild doc/sphinx/src doc/sphinx/build --watch src/python
+    sphinx-autobuild doc/sphinx/src doc/sphinx/build \
+        --watch src/python \
+        --watch src/move/econia/build/Econia/docs
 
 # Run Sphinx doctest
 elif test $1 = dt; then

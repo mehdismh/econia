@@ -11,20 +11,20 @@ the set, hence crit-bit trees do not require complex rebalancing
 algorithms like those of AVL or red-black binary search trees.
 Crit-bit trees support the following operations, quickly:
 
-* Membership testing
-* Insertion
-* Deletion
-* Predecessor
-* Successor
-* Iteration
+1. Membership testing
+2. Insertion
+3. Deletion
+4. Predecessor
+5. Successor
+6. Iteration
 
 References:
 
-* [Bernstein 2006](https://cr.yp.to/critbit.html)
-* [Langley 2008](
+1. [Bernstein 2006](https://cr.yp.to/critbit.html)
+2. [Langley 2008](
 https://www.imperialviolet.org/2008/09/29/critbit-trees.html)
-* [Langley 2012](https://github.com/agl/critbit)
-* [Tcler's Wiki 2021](https://wiki.tcl-lang.org/page/critbit)
+3. [Langley 2012](https://github.com/agl/critbit)
+4. [Tcler's Wiki 2021](https://wiki.tcl-lang.org/page/critbit)
 
 The present implementation involves a tree with two types of nodes,
 inner and outer. Inner nodes have two children each, while outer
@@ -66,38 +66,39 @@ set, while its right child does have bit 0 set.
 ---
 
 
--  [Struct `I`](#0x1234_CritBit_I)
--  [Struct `O`](#0x1234_CritBit_O)
--  [Struct `CB`](#0x1234_CritBit_CB)
--  [Constants](#@Constants_0)
--  [Function `crit_bit`](#0x1234_CritBit_crit_bit)
--  [Function `is_set`](#0x1234_CritBit_is_set)
--  [Function `is_out`](#0x1234_CritBit_is_out)
--  [Function `o_v`](#0x1234_CritBit_o_v)
--  [Function `o_c`](#0x1234_CritBit_o_c)
--  [Function `b_lo`](#0x1234_CritBit_b_lo)
--  [Function `empty`](#0x1234_CritBit_empty)
--  [Function `singleton`](#0x1234_CritBit_singleton)
--  [Function `destroy_empty`](#0x1234_CritBit_destroy_empty)
--  [Function `is_empty`](#0x1234_CritBit_is_empty)
--  [Function `length`](#0x1234_CritBit_length)
--  [Function `b_c_o`](#0x1234_CritBit_b_c_o)
--  [Function `b_c_o_m`](#0x1234_CritBit_b_c_o_m)
--  [Function `borrow`](#0x1234_CritBit_borrow)
--  [Function `borrow_mut`](#0x1234_CritBit_borrow_mut)
--  [Function `has_key`](#0x1234_CritBit_has_key)
--  [Function `search_outer`](#0x1234_CritBit_search_outer)
--  [Function `insert_empty`](#0x1234_CritBit_insert_empty)
--  [Function `insert_singleton`](#0x1234_CritBit_insert_singleton)
--  [Function `insert_general`](#0x1234_CritBit_insert_general)
--  [Function `insert`](#0x1234_CritBit_insert)
--  [Function `check_len`](#0x1234_CritBit_check_len)
--  [Function `pop_singleton`](#0x1234_CritBit_pop_singleton)
--  [Function `pop_height_one`](#0x1234_CritBit_pop_height_one)
--  [Function `pop_general`](#0x1234_CritBit_pop_general)
--  [Function `stitch_swap_remove`](#0x1234_CritBit_stitch_swap_remove)
--  [Function `stitch_parent_of_child`](#0x1234_CritBit_stitch_parent_of_child)
--  [Function `stitch_child_of_parent`](#0x1234_CritBit_stitch_child_of_parent)
+- [Module `0x1234::CritBit`](#module-0x1234critbit)
+  - [Struct `I`](#struct-i)
+  - [Struct `O`](#struct-o)
+  - [Struct `CB`](#struct-cb)
+  - [Constants](#constants)
+  - [Function `crit_bit`](#function-crit_bit)
+  - [Function `is_set`](#function-is_set)
+  - [Function `is_out`](#function-is_out)
+  - [Function `o_v`](#function-o_v)
+  - [Function `o_c`](#function-o_c)
+  - [Function `b_lo`](#function-b_lo)
+  - [Function `empty`](#function-empty)
+  - [Function `singleton`](#function-singleton)
+  - [Function `destroy_empty`](#function-destroy_empty)
+  - [Function `is_empty`](#function-is_empty)
+  - [Function `length`](#function-length)
+  - [Function `b_c_o`](#function-b_c_o)
+  - [Function `b_c_o_m`](#function-b_c_o_m)
+  - [Function `borrow`](#function-borrow)
+  - [Function `borrow_mut`](#function-borrow_mut)
+  - [Function `has_key`](#function-has_key)
+  - [Function `search_outer`](#function-search_outer)
+  - [Function `insert_empty`](#function-insert_empty)
+  - [Function `insert_singleton`](#function-insert_singleton)
+  - [Function `insert_general`](#function-insert_general)
+  - [Function `insert`](#function-insert)
+  - [Function `check_len`](#function-check_len)
+  - [Function `pop_singleton`](#function-pop_singleton)
+  - [Function `pop_height_one`](#function-pop_height_one)
+  - [Function `pop_general`](#function-pop_general)
+  - [Function `stitch_swap_remove`](#function-stitch_swap_remove)
+  - [Function `stitch_parent_of_child`](#function-stitch_parent_of_child)
+  - [Function `stitch_child_of_parent`](#function-stitch_child_of_parent)
 
 
 <pre><code><b>use</b> <a href="../../../build/MoveStdlib/docs/Vector.md#0x1_Vector">0x1::Vector</a>;
@@ -112,7 +113,7 @@ set, while its right child does have bit 0 set.
 Inner node
 
 
-<pre><code><b>struct</b> <a href="CritBit.md#0x1234_CritBit_I">I</a> <b>has</b> store
+<pre><code><b>struct</b> <a href="critbit.html#0x1234_CritBit_I">I</a> <b>has</b> store
 </code></pre>
 
 
@@ -137,7 +138,7 @@ Inner node
 <code>p: u64</code>
 </dt>
 <dd>
- Parent node vector index. <code><a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a></code> when node is root,
+ Parent node vector index. <code><a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a></code> when node is root,
  otherwise corresponds to vector index of an inner node.
 </dd>
 <dt>
@@ -166,7 +167,7 @@ Inner node
 Outer node with key <code>k</code> and value <code>v</code>
 
 
-<pre><code><b>struct</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt; <b>has</b> store
+<pre><code><b>struct</b> <a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt; <b>has</b> store
 </code></pre>
 
 
@@ -196,7 +197,7 @@ Outer node with key <code>k</code> and value <code>v</code>
 <code>p: u64</code>
 </dt>
 <dd>
- Parent node vector index. <code><a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a></code> when node is root,
+ Parent node vector index. <code><a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a></code> when node is root,
  otherwise corresponds to vector index of an inner node.
 </dd>
 </dl>
@@ -211,7 +212,7 @@ Outer node with key <code>k</code> and value <code>v</code>
 A crit-bit tree for key-value pairs with value type <code>V</code>
 
 
-<pre><code><b>struct</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt; <b>has</b> store
+<pre><code><b>struct</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt; <b>has</b> store
 </code></pre>
 
 
@@ -229,13 +230,13 @@ A crit-bit tree for key-value pairs with value type <code>V</code>
  node. Otherwise root is an inner node. 0 when tree is empty
 </dd>
 <dt>
-<code>i: vector&lt;<a href="CritBit.md#0x1234_CritBit_I">CritBit::I</a>&gt;</code>
+<code>i: vector&lt;<a href="critbit.html#0x1234_CritBit_I">CritBit::I</a>&gt;</code>
 </dt>
 <dd>
  Inner nodes
 </dd>
 <dt>
-<code>o: vector&lt;<a href="CritBit.md#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;&gt;</code>
+<code>o: vector&lt;<a href="critbit.html#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;&gt;</code>
 </dt>
 <dd>
  Outer nodes
@@ -255,7 +256,7 @@ A crit-bit tree for key-value pairs with value type <code>V</code>
 When a char in a bytestring is neither 0 nor 1
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_E_BIT_NOT_0_OR_1">E_BIT_NOT_0_OR_1</a>: u64 = 0;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_E_BIT_NOT_0_OR_1">E_BIT_NOT_0_OR_1</a>: u64 = 0;
 </code></pre>
 
 
@@ -265,7 +266,7 @@ When a char in a bytestring is neither 0 nor 1
 When unable to borrow from empty tree
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_E_BORROW_EMPTY">E_BORROW_EMPTY</a>: u64 = 3;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_E_BORROW_EMPTY">E_BORROW_EMPTY</a>: u64 = 3;
 </code></pre>
 
 
@@ -275,7 +276,7 @@ When unable to borrow from empty tree
 When attempting to destroy a non-empty crit-bit tree
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_E_DESTROY_NOT_EMPTY">E_DESTROY_NOT_EMPTY</a>: u64 = 1;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_E_DESTROY_NOT_EMPTY">E_DESTROY_NOT_EMPTY</a>: u64 = 1;
 </code></pre>
 
 
@@ -285,7 +286,7 @@ When attempting to destroy a non-empty crit-bit tree
 When an insertion key is already present in a crit-bit tree
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_E_HAS_K">E_HAS_K</a>: u64 = 2;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_E_HAS_K">E_HAS_K</a>: u64 = 2;
 </code></pre>
 
 
@@ -295,7 +296,7 @@ When an insertion key is already present in a crit-bit tree
 When no more keys can be inserted
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_E_INSERT_FULL">E_INSERT_FULL</a>: u64 = 5;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_E_INSERT_FULL">E_INSERT_FULL</a>: u64 = 5;
 </code></pre>
 
 
@@ -305,7 +306,7 @@ When no more keys can be inserted
 When no matching key in tree
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>: u64 = 4;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>: u64 = 4;
 </code></pre>
 
 
@@ -315,7 +316,7 @@ When no matching key in tree
 <code>u128</code> bitmask with all bits set
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_HI_128">HI_128</a>: u128 = 340282366920938463463374607431768211455;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_HI_128">HI_128</a>: u128 = 340282366920938463463374607431768211455;
 </code></pre>
 
 
@@ -325,7 +326,7 @@ When no matching key in tree
 <code>u64</code> bitmask with all bits set
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_HI_64">HI_64</a>: u64 = 18446744073709551615;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_HI_64">HI_64</a>: u64 = 18446744073709551615;
 </code></pre>
 
 
@@ -335,7 +336,7 @@ When no matching key in tree
 Node type bit flag indicating inner node
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_IN">IN</a>: u64 = 0;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_IN">IN</a>: u64 = 0;
 </code></pre>
 
 
@@ -345,7 +346,7 @@ Node type bit flag indicating inner node
 Left direction
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_L">L</a>: bool = <b>true</b>;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_L">L</a>: bool = <b>true</b>;
 </code></pre>
 
 
@@ -355,7 +356,7 @@ Left direction
 Most significant bit number for a <code>u128</code>
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_MSB_u128">MSB_u128</a>: u8 = 127;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_MSB_u128">MSB_u128</a>: u8 = 127;
 </code></pre>
 
 
@@ -365,7 +366,7 @@ Most significant bit number for a <code>u128</code>
 Bit number of node type flag in a <code>u64</code> vector index
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a>: u8 = 63;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a>: u8 = 63;
 </code></pre>
 
 
@@ -375,7 +376,7 @@ Bit number of node type flag in a <code>u64</code> vector index
 Node type bit flag indicating outer node
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a>: u64 = 1;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_OUT">OUT</a>: u64 = 1;
 </code></pre>
 
 
@@ -385,7 +386,7 @@ Node type bit flag indicating outer node
 Right direction
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_R">R</a>: bool = <b>false</b>;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_R">R</a>: bool = <b>false</b>;
 </code></pre>
 
 
@@ -395,7 +396,7 @@ Right direction
 <code>u64</code> bitmask with all bits set, to flag that a node is at root
 
 
-<pre><code><b>const</b> <a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a>: u64 = 18446744073709551615;
+<pre><code><b>const</b> <a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a>: u64 = 18446744073709551615;
 </code></pre>
 
 
@@ -533,7 +534,7 @@ critical bit, rather than just a bitmask with bit <code>c</code> set, as he
 proposes, which can also be easily generated via <code>1 &lt;&lt; c</code>.
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_crit_bit">crit_bit</a>(s1: u128, s2: u128): u8
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_crit_bit">crit_bit</a>(s1: u128, s2: u128): u8
 </code></pre>
 
 
@@ -542,13 +543,13 @@ proposes, which can also be easily generated via <code>1 &lt;&lt; c</code>.
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_crit_bit">crit_bit</a>(
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_crit_bit">crit_bit</a>(
     s1: u128,
     s2: u128,
 ): u8 {
     <b>let</b> x = s1 ^ s2; // XOR result marked 1 at bits that differ
     <b>let</b> l = 0; // Lower bound on critical bit search
-    <b>let</b> u = <a href="CritBit.md#0x1234_CritBit_MSB_u128">MSB_u128</a>; // Upper bound on critical bit search
+    <b>let</b> u = <a href="critbit.html#0x1234_CritBit_MSB_u128">MSB_u128</a>; // Upper bound on critical bit search
     <b>loop</b> { // Begin binary search
         <b>let</b> m = (l + u) / 2; // Calculate midpoint of search window
         <b>let</b> s = x &gt;&gt; m; // Calculate midpoint shift of XOR result
@@ -569,7 +570,7 @@ proposes, which can also be easily generated via <code>1 &lt;&lt; c</code>.
 Return <code><b>true</b></code> if <code>k</code> is set at bit <code>b</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_is_set">is_set</a>(k: u128, b: u8): bool
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_is_set">is_set</a>(k: u128, b: u8): bool
 </code></pre>
 
 
@@ -578,7 +579,7 @@ Return <code><b>true</b></code> if <code>k</code> is set at bit <code>b</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_is_set">is_set</a>(k: u128, b: u8): bool {k &gt;&gt; b & 1 == 1}
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_is_set">is_set</a>(k: u128, b: u8): bool {k &gt;&gt; b & 1 == 1}
 </code></pre>
 
 
@@ -592,7 +593,7 @@ Return <code><b>true</b></code> if <code>k</code> is set at bit <code>b</code>
 Return <code><b>true</b></code> if vector index <code>i</code> indicates an outer node
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i: u64): bool
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i: u64): bool
 </code></pre>
 
 
@@ -601,7 +602,7 @@ Return <code><b>true</b></code> if vector index <code>i</code> indicates an oute
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i: u64): bool {(i &gt;&gt; <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a> & <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a> == <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a>)}
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i: u64): bool {(i &gt;&gt; <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a> & <a href="critbit.html#0x1234_CritBit_OUT">OUT</a> == <a href="critbit.html#0x1234_CritBit_OUT">OUT</a>)}
 </code></pre>
 
 
@@ -616,7 +617,7 @@ Convert flagged child node index <code>c</code> to unflagged outer node
 vector index, by AND with a bitmask that has only flag bit unset
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(c: u64): u64
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(c: u64): u64
 </code></pre>
 
 
@@ -625,7 +626,7 @@ vector index, by AND with a bitmask that has only flag bit unset
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(c: u64): u64 {c & <a href="CritBit.md#0x1234_CritBit_HI_64">HI_64</a> ^ <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a>}
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(c: u64): u64 {c & <a href="critbit.html#0x1234_CritBit_HI_64">HI_64</a> ^ <a href="critbit.html#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a>}
 </code></pre>
 
 
@@ -640,7 +641,7 @@ Convert unflagged outer node vector index <code>v</code> to flagged child
 node index, by OR with a bitmask that has only flag bit set
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(v: u64): u64
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(v: u64): u64
 </code></pre>
 
 
@@ -649,7 +650,7 @@ node index, by OR with a bitmask that has only flag bit set
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(v: u64): u64 {v | <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a>}
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(v: u64): u64 {v | <a href="critbit.html#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a>}
 </code></pre>
 
 
@@ -661,10 +662,10 @@ node index, by OR with a bitmask that has only flag bit set
 ## Function `b_lo`
 
 Return a bitmask with all bits high except for bit <code>b</code>,
-0-indexed starting at LSB: bitshift 1 by <code>b</code>, XOR with <code><a href="CritBit.md#0x1234_CritBit_HI_128">HI_128</a></code>
+0-indexed starting at LSB: bitshift 1 by <code>b</code>, XOR with <code><a href="critbit.html#0x1234_CritBit_HI_128">HI_128</a></code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_b_lo">b_lo</a>(b: u8): u128
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_b_lo">b_lo</a>(b: u8): u128
 </code></pre>
 
 
@@ -673,7 +674,7 @@ Return a bitmask with all bits high except for bit <code>b</code>,
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_b_lo">b_lo</a>(b: u8): u128 {1 &lt;&lt; b ^ <a href="CritBit.md#0x1234_CritBit_HI_128">HI_128</a>}
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_b_lo">b_lo</a>(b: u8): u128 {1 &lt;&lt; b ^ <a href="critbit.html#0x1234_CritBit_HI_128">HI_128</a>}
 </code></pre>
 
 
@@ -687,7 +688,7 @@ Return a bitmask with all bits high except for bit <code>b</code>,
 Return an empty tree
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_empty">empty</a>&lt;V&gt;(): <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_empty">empty</a>&lt;V&gt;(): <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;
 </code></pre>
 
 
@@ -696,9 +697,9 @@ Return an empty tree
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_empty">empty</a>&lt;V&gt;():
-<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt; {
-    <a href="CritBit.md#0x1234_CritBit_CB">CB</a>{r: 0, i: v_e&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(), o: v_e&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;()}
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_empty">empty</a>&lt;V&gt;():
+<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt; {
+    <a href="critbit.html#0x1234_CritBit_CB">CB</a>{r: 0, i: v_e&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(), o: v_e&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;()}
 }
 </code></pre>
 
@@ -713,7 +714,7 @@ Return an empty tree
 Return a tree with one node having key <code>k</code> and value <code>v</code>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_singleton">singleton</a>&lt;V&gt;(k: u128, v: V): <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_singleton">singleton</a>&lt;V&gt;(k: u128, v: V): <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;
 </code></pre>
 
 
@@ -722,13 +723,13 @@ Return a tree with one node having key <code>k</code> and value <code>v</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_singleton">singleton</a>&lt;V&gt;(
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_singleton">singleton</a>&lt;V&gt;(
     k: u128,
     v: V
 ):
-<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt; {
-    <b>let</b> cb = <a href="CritBit.md#0x1234_CritBit_CB">CB</a>{r: 0, i: v_e&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(), o: v_e&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;()};
-    <a href="CritBit.md#0x1234_CritBit_insert_empty">insert_empty</a>&lt;V&gt;(&<b>mut</b> cb, k, v);
+<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt; {
+    <b>let</b> cb = <a href="critbit.html#0x1234_CritBit_CB">CB</a>{r: 0, i: v_e&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(), o: v_e&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;()};
+    <a href="critbit.html#0x1234_CritBit_insert_empty">insert_empty</a>&lt;V&gt;(&<b>mut</b> cb, k, v);
     cb
 }
 </code></pre>
@@ -744,7 +745,7 @@ Return a tree with one node having key <code>k</code> and value <code>v</code>
 Destroy empty tree <code>cb</code>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_destroy_empty">destroy_empty</a>&lt;V&gt;(cb: <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;)
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_destroy_empty">destroy_empty</a>&lt;V&gt;(cb: <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;)
 </code></pre>
 
 
@@ -753,11 +754,11 @@ Destroy empty tree <code>cb</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_destroy_empty">destroy_empty</a>&lt;V&gt;(
-    cb: <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_destroy_empty">destroy_empty</a>&lt;V&gt;(
+    cb: <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;
 ) {
-    <b>assert</b>!(<a href="CritBit.md#0x1234_CritBit_is_empty">is_empty</a>(&cb), <a href="CritBit.md#0x1234_CritBit_E_DESTROY_NOT_EMPTY">E_DESTROY_NOT_EMPTY</a>);
-    <b>let</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>{r: _, i, o} = cb; // Unpack root index and node vectors
+    <b>assert</b>!(<a href="critbit.html#0x1234_CritBit_is_empty">is_empty</a>(&cb), <a href="critbit.html#0x1234_CritBit_E_DESTROY_NOT_EMPTY">E_DESTROY_NOT_EMPTY</a>);
+    <b>let</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>{r: _, i, o} = cb; // Unpack root index and node vectors
     v_d_e(i); // Destroy empty inner node vector
     v_d_e(o); // Destroy empty outer node vector
 }
@@ -774,7 +775,7 @@ Destroy empty tree <code>cb</code>
 Return <code><b>true</b></code> if <code>cb</code> has no outer nodes
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;): bool
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;): bool
 </code></pre>
 
 
@@ -783,7 +784,7 @@ Return <code><b>true</b></code> if <code>cb</code> has no outer nodes
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;): bool {v_i_e&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o)}
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;): bool {v_i_e&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o)}
 </code></pre>
 
 
@@ -797,7 +798,7 @@ Return <code><b>true</b></code> if <code>cb</code> has no outer nodes
 Return number of keys in <code>cb</code> (number of outer nodes)
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_length">length</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;): u64
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_length">length</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;): u64
 </code></pre>
 
 
@@ -806,7 +807,7 @@ Return number of keys in <code>cb</code> (number of outer nodes)
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_length">length</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;): u64 {v_l&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o)}
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_length">length</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;): u64 {v_l&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o)}
 </code></pre>
 
 
@@ -822,7 +823,7 @@ common prefix with <code>k</code> in non-empty tree <code>cb</code>. <code>b_c_o
 "borrow closest outer"
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &<a href="CritBit.md#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &<a href="critbit.html#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;
 </code></pre>
 
 
@@ -831,20 +832,20 @@ common prefix with <code>k</code> in non-empty tree <code>cb</code>. <code>b_c_o
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(
-    cb: &<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(
+    cb: &<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
-): &<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt; {
+): &<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt; {
     // If root is an outer node, <b>return</b> reference <b>to</b> it
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(cb.r)) <b>return</b> (v_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(cb.r)));
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(cb.r)) <b>return</b> (v_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(cb.r)));
     // Otherwise borrow inner node at root
-    <b>let</b> n = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, cb.r);
+    <b>let</b> n = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, cb.r);
     <b>loop</b> { // Loop over inner nodes
-        // If key is set at critical bit, get index of child on <a href="CritBit.md#0x1234_CritBit_R">R</a>
-        <b>let</b> i_c = <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_set">is_set</a>(k, n.c)) n.r <b>else</b> n.l; // Otherwise <a href="CritBit.md#0x1234_CritBit_L">L</a>
+        // If key is set at critical bit, get index of child on <a href="critbit.html#0x1234_CritBit_R">R</a>
+        <b>let</b> i_c = <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_set">is_set</a>(k, n.c)) n.r <b>else</b> n.l; // Otherwise <a href="critbit.html#0x1234_CritBit_L">L</a>
         // If child is outer node, <b>return</b> reference <b>to</b> it
-        <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i_c)) <b>return</b> v_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_c));
-        n = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_c); // Borrow next inner node <b>to</b> review
+        <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i_c)) <b>return</b> v_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_c));
+        n = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_c); // Borrow next inner node <b>to</b> review
     }
 }
 </code></pre>
@@ -862,7 +863,7 @@ common prefix with <code>k</code> in non-empty tree <code>cb</code>. <code>b_c_o
 indicates "borrow closest outer mutable"
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_b_c_o_m">b_c_o_m</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_b_c_o_m">b_c_o_m</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &<b>mut</b> <a href="critbit.html#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;
 </code></pre>
 
 
@@ -871,20 +872,20 @@ indicates "borrow closest outer mutable"
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_b_c_o_m">b_c_o_m</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_b_c_o_m">b_c_o_m</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
-): &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt; {
+): &<b>mut</b> <a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt; {
     // If root is an outer node, <b>return</b> mutable reference <b>to</b> it
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(cb.r)) <b>return</b> (v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(cb.r)));
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(cb.r)) <b>return</b> (v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(cb.r)));
     // Otherwise borrow inner node at root
-    <b>let</b> n = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, cb.r);
+    <b>let</b> n = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, cb.r);
     <b>loop</b> { // Loop over inner nodes
-        // If key is set at critical bit, get index of child on <a href="CritBit.md#0x1234_CritBit_R">R</a>
-        <b>let</b> i_c = <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_set">is_set</a>(k, n.c)) n.r <b>else</b> n.l; // Otherwise <a href="CritBit.md#0x1234_CritBit_L">L</a>
+        // If key is set at critical bit, get index of child on <a href="critbit.html#0x1234_CritBit_R">R</a>
+        <b>let</b> i_c = <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_set">is_set</a>(k, n.c)) n.r <b>else</b> n.l; // Otherwise <a href="critbit.html#0x1234_CritBit_L">L</a>
         // If child is outer node, <b>return</b> mutable reference <b>to</b> it
-        <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i_c)) <b>return</b> v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_c));
-        n = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_c); // Borrow next inner node <b>to</b> review
+        <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i_c)) <b>return</b> v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_c));
+        n = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_c); // Borrow next inner node <b>to</b> review
     }
 }
 </code></pre>
@@ -901,7 +902,7 @@ Return immutable reference to value corresponding to key <code>k</code> in
 <code>cb</code>, aborting if empty tree or no match
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_borrow">borrow</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &V
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_borrow">borrow</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &V
 </code></pre>
 
 
@@ -910,13 +911,13 @@ Return immutable reference to value corresponding to key <code>k</code> in
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_borrow">borrow</a>&lt;V&gt;(
-    cb: &<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_borrow">borrow</a>&lt;V&gt;(
+    cb: &<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
 ): &V {
-    <b>assert</b>!(!<a href="CritBit.md#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb), <a href="CritBit.md#0x1234_CritBit_E_BORROW_EMPTY">E_BORROW_EMPTY</a>); // Abort <b>if</b> empty
-    <b>let</b> c_o = <a href="CritBit.md#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(cb, k); // Borrow closest outer node
-    <b>assert</b>!(c_o.k == k, <a href="CritBit.md#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>); // Abort <b>if</b> key not in tree
+    <b>assert</b>!(!<a href="critbit.html#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb), <a href="critbit.html#0x1234_CritBit_E_BORROW_EMPTY">E_BORROW_EMPTY</a>); // Abort <b>if</b> empty
+    <b>let</b> c_o = <a href="critbit.html#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(cb, k); // Borrow closest outer node
+    <b>assert</b>!(c_o.k == k, <a href="critbit.html#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>); // Abort <b>if</b> key not in tree
     &c_o.v // Return immutable reference <b>to</b> corresponding value
 }
 </code></pre>
@@ -933,7 +934,7 @@ Return mutable reference to value corresponding to key <code>k</code> in
 <code>cb</code>, aborting if empty tree or no match
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_borrow_mut">borrow_mut</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &<b>mut</b> V
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_borrow_mut">borrow_mut</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): &<b>mut</b> V
 </code></pre>
 
 
@@ -942,13 +943,13 @@ Return mutable reference to value corresponding to key <code>k</code> in
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_borrow_mut">borrow_mut</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_borrow_mut">borrow_mut</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
 ): &<b>mut</b> V {
-    <b>assert</b>!(!<a href="CritBit.md#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb), <a href="CritBit.md#0x1234_CritBit_E_BORROW_EMPTY">E_BORROW_EMPTY</a>); // Abort <b>if</b> empty
-    <b>let</b> c_o = <a href="CritBit.md#0x1234_CritBit_b_c_o_m">b_c_o_m</a>&lt;V&gt;(cb, k); // Borrow closest outer node
-    <b>assert</b>!(c_o.k == k, <a href="CritBit.md#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>); // Abort <b>if</b> key not in tree
+    <b>assert</b>!(!<a href="critbit.html#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb), <a href="critbit.html#0x1234_CritBit_E_BORROW_EMPTY">E_BORROW_EMPTY</a>); // Abort <b>if</b> empty
+    <b>let</b> c_o = <a href="critbit.html#0x1234_CritBit_b_c_o_m">b_c_o_m</a>&lt;V&gt;(cb, k); // Borrow closest outer node
+    <b>assert</b>!(c_o.k == k, <a href="critbit.html#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>); // Abort <b>if</b> key not in tree
     &<b>mut</b> c_o.v // Return mutable reference <b>to</b> corresponding value
 }
 </code></pre>
@@ -964,7 +965,7 @@ Return mutable reference to value corresponding to key <code>k</code> in
 Return true if <code>cb</code> has key <code>k</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_has_key">has_key</a>&lt;V&gt;(cb: &<a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): bool
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_has_key">has_key</a>&lt;V&gt;(cb: &<a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): bool
 </code></pre>
 
 
@@ -973,13 +974,13 @@ Return true if <code>cb</code> has key <code>k</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_has_key">has_key</a>&lt;V&gt;(
-    cb: &<a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_has_key">has_key</a>&lt;V&gt;(
+    cb: &<a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
 ): bool {
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb)) <b>return</b> <b>false</b>; // Return <b>false</b> <b>if</b> empty
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_empty">is_empty</a>&lt;V&gt;(cb)) <b>return</b> <b>false</b>; // Return <b>false</b> <b>if</b> empty
     // Return <b>true</b> <b>if</b> closest outer node <b>has</b> same key
-    <b>return</b> <a href="CritBit.md#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(cb, k).k == k
+    <b>return</b> <a href="critbit.html#0x1234_CritBit_b_c_o">b_c_o</a>&lt;V&gt;(cb, k).k == k
 }
 </code></pre>
 
@@ -996,14 +997,14 @@ branching left or right at each inner node depending on whether
 <code>k</code> is unset or set, respectively, at the given critical bit.
 After arriving at an outer node, then return:
 * <code>u64</code>: index of searched outer node (with node type bit flag)
-* <code>bool</code>: the side, <code><a href="CritBit.md#0x1234_CritBit_L">L</a></code> or <code><a href="CritBit.md#0x1234_CritBit_R">R</a></code>, on which the searched outer node
+* <code>bool</code>: the side, <code><a href="critbit.html#0x1234_CritBit_L">L</a></code> or <code><a href="critbit.html#0x1234_CritBit_R">R</a></code>, on which the searched outer node
 is a child of its parent
 * <code>u128</code>: key of searched outer node
 * <code>u64</code>: vector index of parent to searched outer node
-* <code>&<b>mut</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;</code>: mutable reference to searched outer node
+* <code>&<b>mut</b> <a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;</code>: mutable reference to searched outer node
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_search_outer">search_outer</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): (u64, bool, u128, u64, &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_search_outer">search_outer</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): (u64, bool, u128, u64, &<b>mut</b> <a href="critbit.html#0x1234_CritBit_O">CritBit::O</a>&lt;V&gt;)
 </code></pre>
 
 
@@ -1012,30 +1013,30 @@ is a child of its parent
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_search_outer">search_outer</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_search_outer">search_outer</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128
 ): (
     u64,
     bool,
     u128,
     u64,
-    &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;,
+    &<b>mut</b> <a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;,
 ) {
-    <b>let</b> s_p = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, 0); // Initialize search parent <b>to</b> root
+    <b>let</b> s_p = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, 0); // Initialize search parent <b>to</b> root
     <b>loop</b> { // Loop over inner nodes until branching <b>to</b> outer node
         // If key set at critical bit, track field index and side of
-        // <a href="CritBit.md#0x1234_CritBit_R">R</a> child, <b>else</b> <a href="CritBit.md#0x1234_CritBit_L">L</a>
-        <b>let</b> (i, s) = <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_set">is_set</a>(k, s_p.c)) (s_p.r, <a href="CritBit.md#0x1234_CritBit_R">R</a>) <b>else</b> (s_p.l, <a href="CritBit.md#0x1234_CritBit_L">L</a>);
-        <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i)) { // If child is outer node
+        // <a href="critbit.html#0x1234_CritBit_R">R</a> child, <b>else</b> <a href="critbit.html#0x1234_CritBit_L">L</a>
+        <b>let</b> (i, s) = <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_set">is_set</a>(k, s_p.c)) (s_p.r, <a href="critbit.html#0x1234_CritBit_R">R</a>) <b>else</b> (s_p.l, <a href="critbit.html#0x1234_CritBit_L">L</a>);
+        <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i)) { // If child is outer node
             // Borrow immutable reference <b>to</b> it
-            <b>let</b> s_o = v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i));
+            <b>let</b> s_o = v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i));
             // Return field index of searched outer node, its side
             // <b>as</b> a child, its key, the vector index of its parent,
             // and a mutable reference <b>to</b> it
             <b>return</b> (i, s, s_o.k, s_o.p, s_o)
         };
-        s_p = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, i); // Search next inner node
+        s_p = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, i); // Search next inner node
     }
 }
 </code></pre>
@@ -1051,7 +1052,7 @@ is a child of its parent
 Insert key-value pair <code>k</code> and <code>v</code> into an empty <code>cb</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert_empty">insert_empty</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_insert_empty">insert_empty</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V)
 </code></pre>
 
 
@@ -1060,15 +1061,15 @@ Insert key-value pair <code>k</code> and <code>v</code> into an empty <code>cb</
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert_empty">insert_empty</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_insert_empty">insert_empty</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
     v: V
 ) {
     // Push back outer node onto tree's vector of outer nodes
-    v_pu_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;{k, v, p: <a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a>});
+    v_pu_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;{k, v, p: <a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a>});
     // Set root index field <b>to</b> indicate 0th outer node
-    cb.r = <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a>;
+    cb.r = <a href="critbit.html#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a>;
 }
 </code></pre>
 
@@ -1085,7 +1086,7 @@ case that that requires updating the root field of the tree,
 aborting if <code>k</code> already in <code>cb</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert_singleton">insert_singleton</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_insert_singleton">insert_singleton</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V)
 </code></pre>
 
 
@@ -1094,24 +1095,24 @@ aborting if <code>k</code> already in <code>cb</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert_singleton">insert_singleton</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_insert_singleton">insert_singleton</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
     v: V
 ) {
-    <b>let</b> n = v_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, 0); // Borrow existing outer node
-    <b>assert</b>!(k != n.k, <a href="CritBit.md#0x1234_CritBit_E_HAS_K">E_HAS_K</a>); // Assert insertion key not in tree
-    <b>let</b> c = <a href="CritBit.md#0x1234_CritBit_crit_bit">crit_bit</a>(n.k, k); // Get critical bit between two keys
+    <b>let</b> n = v_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, 0); // Borrow existing outer node
+    <b>assert</b>!(k != n.k, <a href="critbit.html#0x1234_CritBit_E_HAS_K">E_HAS_K</a>); // Assert insertion key not in tree
+    <b>let</b> c = <a href="critbit.html#0x1234_CritBit_crit_bit">crit_bit</a>(n.k, k); // Get critical bit between two keys
     // If insertion key greater than existing key, new inner node at
     // root should have existing key <b>as</b> left child and insertion key
     // <b>as</b> right child, otherwise the opposite
-    <b>let</b> (l, r) = <b>if</b> (k &gt; n.k) (<a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(0), <a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(1)) <b>else</b> (<a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(1), <a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(0));
+    <b>let</b> (l, r) = <b>if</b> (k &gt; n.k) (<a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(0), <a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(1)) <b>else</b> (<a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(1), <a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(0));
     // Push back new inner node <b>with</b> corresponding children
-    v_pu_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, <a href="CritBit.md#0x1234_CritBit_I">I</a>{c, p: <a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a>, l, r});
+    v_pu_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, <a href="critbit.html#0x1234_CritBit_I">I</a>{c, p: <a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a>, l, r});
     // Update existing outer node <b>to</b> have new inner node <b>as</b> parent
-    v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, 0).p = 0;
+    v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, 0).p = 0;
     // Push back new outer node onto outer node vector
-    v_pu_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;{k, v, p: 0});
+    v_pu_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;{k, v, p: 0});
     // Update tree root field for newly-created inner node
     cb.r = 0;
 }
@@ -1194,7 +1195,7 @@ parent when the search parent is not the root:
 ```
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert_general">insert_general</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V, n_o: u64)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_insert_general">insert_general</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V, n_o: u64)
 </code></pre>
 
 
@@ -1203,35 +1204,35 @@ parent when the search parent is not the root:
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert_general">insert_general</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_insert_general">insert_general</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
     v: V,
     n_o: u64
 ) {
     // Get number of inner nodes in tree (index of new inner node)
-    <b>let</b> i_n_i = v_l&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i);
+    <b>let</b> i_n_i = v_l&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i);
     // Get field index of searched outer node, its side <b>as</b> a child,
     // its key, the vector index of its parent, and borrow a mutable
     // reference <b>to</b> it
-    <b>let</b> (i_s_o, s_s_o, k_s_o, i_s_p, s_o) = <a href="CritBit.md#0x1234_CritBit_search_outer">search_outer</a>(cb, k);
-    <b>assert</b>!(k_s_o != k, <a href="CritBit.md#0x1234_CritBit_E_HAS_K">E_HAS_K</a>); // Assert key not a duplicate
+    <b>let</b> (i_s_o, s_s_o, k_s_o, i_s_p, s_o) = <a href="critbit.html#0x1234_CritBit_search_outer">search_outer</a>(cb, k);
+    <b>assert</b>!(k_s_o != k, <a href="critbit.html#0x1234_CritBit_E_HAS_K">E_HAS_K</a>); // Assert key not a duplicate
     // Set searched outer node <b>to</b> have <b>as</b> its parent new inner node
     s_o.p = i_n_i;
     // Borrow mutable reference <b>to</b> search parent
-    <b>let</b> s_p = v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_s_p);
+    <b>let</b> s_p = v_b_m&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_s_p);
     // Update search parent <b>to</b> have <b>as</b> a child the new inner node,
     // on the same side that the searched outer node was a child at
-    <b>if</b> (s_s_o == <a href="CritBit.md#0x1234_CritBit_L">L</a>) s_p.l = i_n_i <b>else</b> s_p.r = i_n_i;
-    <b>let</b> c = <a href="CritBit.md#0x1234_CritBit_crit_bit">crit_bit</a>(k_s_o, k); // Get critical bit of divergence
+    <b>if</b> (s_s_o == <a href="critbit.html#0x1234_CritBit_L">L</a>) s_p.l = i_n_i <b>else</b> s_p.r = i_n_i;
+    <b>let</b> c = <a href="critbit.html#0x1234_CritBit_crit_bit">crit_bit</a>(k_s_o, k); // Get critical bit of divergence
     // If insertion key less than searched outer key, declare left
     // child field (for new inner node) <b>as</b> new outer node and right
     // child field <b>as</b> searched outer node, <b>else</b> flip the positions
-    <b>let</b> (l, r) = <b>if</b> (k &lt; k_s_o) (<a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(n_o), i_s_o) <b>else</b> (i_s_o, <a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(n_o));
+    <b>let</b> (l, r) = <b>if</b> (k &lt; k_s_o) (<a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(n_o), i_s_o) <b>else</b> (i_s_o, <a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(n_o));
     // Push back new inner node having search parent <b>as</b> its parent
-    v_pu_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, <a href="CritBit.md#0x1234_CritBit_I">I</a>{c, p: i_s_p, l, r});
+    v_pu_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, <a href="critbit.html#0x1234_CritBit_I">I</a>{c, p: i_s_p, l, r});
     // Push back new outer node having new inner node <b>as</b> parent
-    v_pu_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_O">O</a>{k, v, p: i_n_i});
+    v_pu_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_O">O</a>{k, v, p: i_n_i});
 }
 </code></pre>
 
@@ -1247,7 +1248,7 @@ Insert key <code>k</code> and value <code>v</code> into <code>cb</code>, abortin
 in <code>cb</code>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert">insert</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V)
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_insert">insert</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, v: V)
 </code></pre>
 
 
@@ -1256,17 +1257,17 @@ in <code>cb</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="CritBit.md#0x1234_CritBit_insert">insert</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>public</b> <b>fun</b> <a href="critbit.html#0x1234_CritBit_insert">insert</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
     v: V
 ) {
-    <b>let</b> l = <a href="CritBit.md#0x1234_CritBit_length">length</a>(cb); // Get length of tree
-    <a href="CritBit.md#0x1234_CritBit_check_len">check_len</a>(l); // Verify insertion can take place
+    <b>let</b> l = <a href="critbit.html#0x1234_CritBit_length">length</a>(cb); // Get length of tree
+    <a href="critbit.html#0x1234_CritBit_check_len">check_len</a>(l); // Verify insertion can take place
     // Insert via one of three cases, depending on the length
-    <b>if</b> (l == 0) <a href="CritBit.md#0x1234_CritBit_insert_empty">insert_empty</a>(cb, k , v) <b>else</b>
-    <b>if</b> (l == 1) <a href="CritBit.md#0x1234_CritBit_insert_singleton">insert_singleton</a>(cb, k, v) <b>else</b>
-    <a href="CritBit.md#0x1234_CritBit_insert_general">insert_general</a>(cb, k , v, l);
+    <b>if</b> (l == 0) <a href="critbit.html#0x1234_CritBit_insert_empty">insert_empty</a>(cb, k , v) <b>else</b>
+    <b>if</b> (l == 1) <a href="critbit.html#0x1234_CritBit_insert_singleton">insert_singleton</a>(cb, k, v) <b>else</b>
+    <a href="critbit.html#0x1234_CritBit_insert_general">insert_general</a>(cb, k , v, l);
 }
 </code></pre>
 
@@ -1284,7 +1285,7 @@ the maximum number of keys that can be stored in a tree, since
 the 63rd bit is reserved for the node type bit flag)
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_check_len">check_len</a>(l: u64)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_check_len">check_len</a>(l: u64)
 </code></pre>
 
 
@@ -1293,7 +1294,7 @@ the 63rd bit is reserved for the node type bit flag)
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_check_len">check_len</a>(l: u64) {<b>assert</b>!(l &lt; <a href="CritBit.md#0x1234_CritBit_HI_64">HI_64</a> ^ <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a>, <a href="CritBit.md#0x1234_CritBit_E_INSERT_FULL">E_INSERT_FULL</a>);}
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_check_len">check_len</a>(l: u64) {<b>assert</b>!(l &lt; <a href="critbit.html#0x1234_CritBit_HI_64">HI_64</a> ^ <a href="critbit.html#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a>, <a href="critbit.html#0x1234_CritBit_E_INSERT_FULL">E_INSERT_FULL</a>);}
 </code></pre>
 
 
@@ -1309,7 +1310,7 @@ destroy the outer node where it was stored, for the special case
 of a singleton tree. Abort if <code>k</code> not in <code>cb</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_pop_singleton">pop_singleton</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): V
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_pop_singleton">pop_singleton</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): V
 </code></pre>
 
 
@@ -1318,15 +1319,15 @@ of a singleton tree. Abort if <code>k</code> not in <code>cb</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_pop_singleton">pop_singleton</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_pop_singleton">pop_singleton</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128
 ): V {
     // Assert key actually in tree at root node
-    <b>assert</b>!(v_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, 0).k == k, <a href="CritBit.md#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>);
+    <b>assert</b>!(v_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, 0).k == k, <a href="critbit.html#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>);
     cb.r = 0; // Update root
     // Pop off and destruct outer node at root
-    <b>let</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>{k: _, v, p: _} = v_po_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o);
+    <b>let</b> <a href="critbit.html#0x1234_CritBit_O">O</a>{k: _, v, p: _} = v_po_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o);
     v // Return popped value
 }
 </code></pre>
@@ -1344,7 +1345,7 @@ destroy the outer node where it was stored, for the special case
 of a tree having height one. Abort if <code>k</code> not in <code>cb</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_pop_height_one">pop_height_one</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): V
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_pop_height_one">pop_height_one</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128): V
 </code></pre>
 
 
@@ -1353,26 +1354,26 @@ of a tree having height one. Abort if <code>k</code> not in <code>cb</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_pop_height_one">pop_height_one</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_pop_height_one">pop_height_one</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128
 ): V {
-    <b>let</b> r = v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, 0); // Borrow inner node at root
+    <b>let</b> r = v_b_m&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, 0); // Borrow inner node at root
     // If pop key is set at critical bit, mark outer node <b>to</b> destroy
     // <b>as</b> the root's right child and mark the outer node <b>to</b> keep
     // <b>as</b> the root's left child, otherwise the opposite
     <b>let</b> (o_d, o_k) =
-        <b>if</b>(<a href="CritBit.md#0x1234_CritBit_is_set">is_set</a>(k, r.c)) (<a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(r.r), <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(r.l)) <b>else</b> (<a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(r.l), <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(r.r));
+        <b>if</b>(<a href="critbit.html#0x1234_CritBit_is_set">is_set</a>(k, r.c)) (<a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(r.r), <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(r.l)) <b>else</b> (<a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(r.l), <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(r.r));
     // Assert key is actually in tree
-    <b>assert</b>!(v_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, o_d).k == k, <a href="CritBit.md#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>);
+    <b>assert</b>!(v_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, o_d).k == k, <a href="critbit.html#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>);
     // Destroy inner node at root
-    <b>let</b> <a href="CritBit.md#0x1234_CritBit_I">I</a>{c: _, p: _, l: _, r: _} = v_po_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i);
+    <b>let</b> <a href="critbit.html#0x1234_CritBit_I">I</a>{c: _, p: _, l: _, r: _} = v_po_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i);
     // Update kept outer node parent field <b>to</b> indicate it is root
-    v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, o_k).p = <a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a>;
+    v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, o_k).p = <a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a>;
     // Swap remove outer node <b>to</b> destroy, storing only its value
-    <b>let</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>{k: _, v, p: _} = v_s_r&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, o_d);
+    <b>let</b> <a href="critbit.html#0x1234_CritBit_O">O</a>{k: _, v, p: _} = v_s_r&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, o_d);
     // Update root index field <b>to</b> indicate kept outer node
-    cb.r = <a href="CritBit.md#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="CritBit.md#0x1234_CritBit_N_TYPE">N_TYPE</a>;
+    cb.r = <a href="critbit.html#0x1234_CritBit_OUT">OUT</a> &lt;&lt; <a href="critbit.html#0x1234_CritBit_N_TYPE">N_TYPE</a>;
     v // Return popped value
 }
 </code></pre>
@@ -1462,7 +1463,7 @@ Outer node sibling case:
 ```
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_pop_general">pop_general</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, n_o: u64): V
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_pop_general">pop_general</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, k: u128, n_o: u64): V
 </code></pre>
 
 
@@ -1471,50 +1472,50 @@ Outer node sibling case:
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_pop_general">pop_general</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_pop_general">pop_general</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     k: u128,
     n_o: u64
 ): V {
     // Get field index of searched outer node, its side <b>as</b> a child,
     // its key, and the vector index of its parent
-    <b>let</b> (i_s_o, s_s_o, k_s_o, i_s_p, _) = <a href="CritBit.md#0x1234_CritBit_search_outer">search_outer</a>(cb, k);
-    <b>assert</b>!(k_s_o == k, <a href="CritBit.md#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>); // Assert key in tree
-    <b>let</b> n_i = v_l&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i); // Get number of inner nodes pre-pop
+    <b>let</b> (i_s_o, s_s_o, k_s_o, i_s_p, _) = <a href="critbit.html#0x1234_CritBit_search_outer">search_outer</a>(cb, k);
+    <b>assert</b>!(k_s_o == k, <a href="critbit.html#0x1234_CritBit_E_NOT_HAS_K">E_NOT_HAS_K</a>); // Assert key in tree
+    <b>let</b> n_i = v_l&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i); // Get number of inner nodes pre-pop
     // Borrow immutable reference <b>to</b> popped node's parent
-    <b>let</b> p = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_s_p);
+    <b>let</b> p = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_s_p);
     // If popped outer node was a left child, store the right child
     // field index of its parent <b>as</b> the child field index of the
     // popped node's sibling. Else flip the direction
-    <b>let</b> i_s = <b>if</b> (s_s_o == <a href="CritBit.md#0x1234_CritBit_L">L</a>) p.r <b>else</b> p.l;
+    <b>let</b> i_s = <b>if</b> (s_s_o == <a href="critbit.html#0x1234_CritBit_L">L</a>) p.r <b>else</b> p.l;
     // Get parent field index of parent of popped node
     <b>let</b> i_p_p = p.p;
     // Update popped node's sibling <b>to</b> have at its parent index
     // field the same index <b>as</b> the popped node's parent, whether
     // the sibling is an inner or outer node
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i_s)) v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_s)).p = i_p_p
-        <b>else</b> v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_s).p = i_p_p;
-    <b>if</b> (i_p_p == <a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a>) { // If popped node's parent is root
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i_s)) v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_s)).p = i_p_p
+        <b>else</b> v_b_m&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_s).p = i_p_p;
+    <b>if</b> (i_p_p == <a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a>) { // If popped node's parent is root
         // Set root field index <b>to</b> index of popped node's sibling
         cb.r = i_s;
     } <b>else</b> { // If popped node <b>has</b> a grandparent
         // Borrow mutable reference <b>to</b> popped node's grandparent
-        <b>let</b> g_p = v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_p_p);
+        <b>let</b> g_p = v_b_m&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_p_p);
         // If popped node's parent was a left child, <b>update</b> popped
         // node's grandparent <b>to</b> have <b>as</b> its child the popped node's
         // sibling. Else the right child
         <b>if</b> (g_p.l == i_s_p) g_p.l = i_s <b>else</b> g_p.r = i_s;
     };
     // Swap remove popped outer node, storing only its value
-    <b>let</b> <a href="CritBit.md#0x1234_CritBit_O">O</a>{k: _, v, p: _} = v_s_r&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_s_o));
+    <b>let</b> <a href="critbit.html#0x1234_CritBit_O">O</a>{k: _, v, p: _} = v_s_r&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_s_o));
     // If destroyed outer node was not last outer node in vector,
     // repair the parent-child relationship broken by swap remove
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_s_o) &lt; n_o - 1) <a href="CritBit.md#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>(cb, i_s_o, n_o);
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_s_o) &lt; n_o - 1) <a href="critbit.html#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>(cb, i_s_o, n_o);
     // Swap remove parent of popped outer node, storing no fields
-    <b>let</b> <a href="CritBit.md#0x1234_CritBit_I">I</a>{c: _, p: _, l: _, r: _} = v_s_r&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_s_p);
+    <b>let</b> <a href="critbit.html#0x1234_CritBit_I">I</a>{c: _, p: _, l: _, r: _} = v_s_r&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_s_p);
     // If destroyed inner node was not last inner node in vector,
     // repair the parent-child relationship broken by swap remove
-    <b>if</b> (i_s_p &lt; n_i - 1) <a href="CritBit.md#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>(cb, i_s_p, n_i);
+    <b>if</b> (i_s_p &lt; n_i - 1) <a href="critbit.html#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>(cb, i_s_p, n_i);
     v // Return popped value
 }
 </code></pre>
@@ -1533,7 +1534,7 @@ child field index <code>i_n</code>, in vector that contained <code>n_n</code> no
 before the swap remove (when relocated node was last in vector)
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, i_n: u64, n_n: u64)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, i_n: u64, n_n: u64)
 </code></pre>
 
 
@@ -1542,29 +1543,29 @@ before the swap remove (when relocated node was last in vector)
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_stitch_swap_remove">stitch_swap_remove</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     i_n: u64,
     n_n: u64
 ) {
     // If child field index indicates relocated outer node
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i_n)) {
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i_n)) {
         // Get index of parent <b>to</b> relocated node
-        <b>let</b> i_p = v_b&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_n)).p;
+        <b>let</b> i_p = v_b&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_n)).p;
         // Update parent <b>to</b> reflect relocated node position
-        <a href="CritBit.md#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(cb, i_n, i_p, <a href="CritBit.md#0x1234_CritBit_o_c">o_c</a>(n_n - 1));
+        <a href="critbit.html#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(cb, i_n, i_p, <a href="critbit.html#0x1234_CritBit_o_c">o_c</a>(n_n - 1));
     } <b>else</b> { // If child field index indicates relocated inner node
         // Borrow mutable reference <b>to</b> it
-        <b>let</b> n = v_b&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_n);
+        <b>let</b> n = v_b&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&cb.i, i_n);
         // Get field index of node's parent and children
         <b>let</b> (i_p, i_l, i_r) = (n.p, n.l, n.r);
         // Update children <b>to</b> have relocated node <b>as</b> their parent
-        <a href="CritBit.md#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>(cb, i_n, i_l); // Left child
-        <a href="CritBit.md#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>(cb, i_n, i_r); // Right child
+        <a href="critbit.html#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>(cb, i_n, i_l); // Left child
+        <a href="critbit.html#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>(cb, i_n, i_r); // Right child
         // If root node relocated, <b>update</b> root field and <b>return</b>
-        <b>if</b> (i_p == <a href="CritBit.md#0x1234_CritBit_ROOT">ROOT</a>) {cb.r = i_n; <b>return</b>};
+        <b>if</b> (i_p == <a href="critbit.html#0x1234_CritBit_ROOT">ROOT</a>) {cb.r = i_n; <b>return</b>};
         // Else <b>update</b> parent <b>to</b> reflect relocated node position
-        <a href="CritBit.md#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(cb, i_n, i_p, n_n - 1);
+        <a href="critbit.html#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(cb, i_n, i_p, n_n - 1);
     }
 }
 </code></pre>
@@ -1582,7 +1583,7 @@ as its parent an inner node that has be relocated to child field
 index <code>i_n</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, i_n: u64, i_c: u64)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, i_n: u64, i_c: u64)
 </code></pre>
 
 
@@ -1591,16 +1592,16 @@ index <code>i_n</code>
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_stitch_parent_of_child">stitch_parent_of_child</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     i_n: u64,
     i_c: u64
 ) {
     // If child is an outer node, borrow corresponding node and
     // <b>update</b> its parent field index <b>to</b> that of relocated node
-    <b>if</b> (<a href="CritBit.md#0x1234_CritBit_is_out">is_out</a>(i_c)) v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="CritBit.md#0x1234_CritBit_o_v">o_v</a>(i_c)).p = i_n
+    <b>if</b> (<a href="critbit.html#0x1234_CritBit_is_out">is_out</a>(i_c)) v_b_m&lt;<a href="critbit.html#0x1234_CritBit_O">O</a>&lt;V&gt;&gt;(&<b>mut</b> cb.o, <a href="critbit.html#0x1234_CritBit_o_v">o_v</a>(i_c)).p = i_n
         // Otherwise perform <b>update</b> on an inner node
-        <b>else</b> v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_c).p = i_n;
+        <b>else</b> v_b_m&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_c).p = i_n;
 }
 </code></pre>
 
@@ -1617,7 +1618,7 @@ child a node that has been relocated from old child field index
 <code>i_o</code> to new child field index <code>i_n</code>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, i_n: u64, i_p: u64, i_o: u64)
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CritBit::CB</a>&lt;V&gt;, i_n: u64, i_p: u64, i_o: u64)
 </code></pre>
 
 
@@ -1626,14 +1627,14 @@ child a node that has been relocated from old child field index
 <summary>Implementation</summary>
 
 
-<pre><code><b>fun</b> <a href="CritBit.md#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(
-    cb: &<b>mut</b> <a href="CritBit.md#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
+<pre><code><b>fun</b> <a href="critbit.html#0x1234_CritBit_stitch_child_of_parent">stitch_child_of_parent</a>&lt;V&gt;(
+    cb: &<b>mut</b> <a href="critbit.html#0x1234_CritBit_CB">CB</a>&lt;V&gt;,
     i_n: u64,
     i_p: u64,
     i_o: u64
 ) {
     // Borrow mutable reference <b>to</b> parent
-    <b>let</b> p = v_b_m&lt;<a href="CritBit.md#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_p);
+    <b>let</b> p = v_b_m&lt;<a href="critbit.html#0x1234_CritBit_I">I</a>&gt;(&<b>mut</b> cb.i, i_p);
     // If relocated node was previously left child, <b>update</b>
     // parent's left child <b>to</b> indicate the relocated node's new
     // position, otherwise do <b>update</b> for right child of parent

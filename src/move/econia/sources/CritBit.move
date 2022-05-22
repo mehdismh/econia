@@ -6,20 +6,20 @@
 /// algorithms like those of AVL or red-black binary search trees.
 /// Crit-bit trees support the following operations, quickly:
 ///
-/// * Membership testing
-/// * Insertion
-/// * Deletion
-/// * Predecessor
-/// * Successor
-/// * Iteration
+/// 1. Membership testing
+/// 2. Insertion
+/// 3. Deletion
+/// 4. Predecessor
+/// 5. Successor
+/// 6. Iteration
 ///
 /// References:
 ///
-/// * [Bernstein 2006](https://cr.yp.to/critbit.html)
-/// * [Langley 2008](
-///   https://www.imperialviolet.org/2008/09/29/critbit-trees.html)
-/// * [Langley 2012](https://github.com/agl/critbit)
-/// * [Tcler's Wiki 2021](https://wiki.tcl-lang.org/page/critbit)
+/// 1. [Bernstein 2006](https://cr.yp.to/critbit.html)
+/// 2. [Langley 2008](
+///    https://www.imperialviolet.org/2008/09/29/critbit-trees.html)
+/// 3. [Langley 2012](https://github.com/agl/critbit)
+/// 4. [Tcler's Wiki 2021](https://wiki.tcl-lang.org/page/critbit)
 ///
 /// The present implementation involves a tree with two types of nodes,
 /// inner and outer. Inner nodes have two children each, while outer

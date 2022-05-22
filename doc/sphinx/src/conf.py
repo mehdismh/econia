@@ -32,6 +32,7 @@ author = 'Team Econia'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.napoleon'
@@ -41,6 +42,9 @@ autodoc_default_options = {
     'member-order': 'bysource',
     'members': True,
 }
+
+myst_commonmark_only = True
+myst_heading_anchors = 5
 
 napoleon_numpy_docstring = True
 

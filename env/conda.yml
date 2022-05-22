@@ -165,3 +165,14 @@ dependencies:
   - zipp=3.7.0=pyhd3eb1b0_0
   - zlib=1.2.11=h4dc903c_4
   - zstd=1.4.9=h322a384_0
+  - pip:
+    - appdirs==1.4.4
+    - esbonio==0.11.2
+    - markdown-it-py==2.1.0
+    - mdit-py-plugins==0.3.0
+    - mdurl==0.1.1
+    - myst-parser==0.17.2
+    - pydantic==1.8.2
+    - pygls==0.11.3
+    - pyspellchecker==0.6.3
+    - typeguard==2.13.3
