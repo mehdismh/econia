@@ -638,6 +638,8 @@ module econia::market {
     const E_NOT_SIMULATION_ACCOUNT: u64 = 27;
     /// Invalid self match behavior flag.
     const E_INVALID_SELF_MATCH_BEHAVIOR: u64 = 28;
+    /// Invalid passive advance percentage.
+    const E_INVALID_PASSIVE_ADVANCE_PERCENTAGE: u64 = 29;
 
     // Error codes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -679,11 +681,13 @@ module econia::market {
     const HI_PRICE: u64 = 0xffffffff;
     /// Flag for immediate-or-cancel order restriction.
     const IMMEDIATE_OR_CANCEL: u8 = 2;
+    /// Maximum possible percentage.
+    const MAX_PERCENT: u8 = 100;
     /// Flag to trade max possible asset amount: `u64` bitmask with all
     /// bits set, generated in Python via `hex(int('1' * 64, 2))`.
     const MAX_POSSIBLE: u64 = 0xffffffffffffffff;
     /// Number of restriction flags.
-    const N_RESTRICTIONS: u8 = 3;
+    const N_RESTRICTIONS: u8 = 4;
     /// Flag for null value when null defined as 0.
     const NIL: u64 = 0;
     /// Custodian ID flag for no custodian.
@@ -695,10 +699,12 @@ module econia::market {
     const NO_RESTRICTION: u8 = 0;
     /// Underwriter ID flag for no underwriter.
     const NO_UNDERWRITER: u64 = 0;
+    /// Flag for passive join order restriction.
+    const PASSIVE_ADVANCE: u8 = 3;
     /// Flag for `MakerEvent.type` when order is placed.
     const PLACE: u8 = 3;
     /// Flag for post-or-abort order restriction.
-    const POST_OR_ABORT: u8 = 3;
+    const POST_OR_ABORT: u8 = 4;
     /// Flag for sell direction.
     const SELL: bool = true;
     /// Number of bits maker order counter is shifted in a market order
@@ -944,6 +950,7 @@ module econia::market {
         price: u64,
         restriction: u8,
         self_match_behavior: u8,
+        passive_advance_percentage: u8,
         custodian_capability_ref: &CustodianCapability
     ): (
         u128,
@@ -964,6 +971,7 @@ module econia::market {
             price,
             restriction,
             self_match_behavior,
+            passive_advance_percentage,
             CRITICAL_HEIGHT)
     }
 
@@ -990,7 +998,8 @@ module econia::market {
         size: u64,
         price: u64,
         restriction: u8,
-        self_match_behavior: u8
+        self_match_behavior: u8,
+        passive_advance_percentage: u8
     ): (
         u128,
         u64,
@@ -1010,6 +1019,7 @@ module econia::market {
             price,
             restriction,
             self_match_behavior,
+            passive_advance_percentage,
             CRITICAL_HEIGHT)
     }
 
@@ -1605,11 +1615,12 @@ module econia::market {
         size: u64,
         price: u64,
         restriction: u8,
-        self_match_behavior: u8
+        self_match_behavior: u8,
+        passive_advance_percentage: u8
     ) acquires OrderBooks {
         place_limit_order_user<BaseType, QuoteType>(
             user, market_id, integrator, side, size, price, restriction,
-            self_match_behavior);
+            self_match_behavior, passive_advance_percentage);
     }
 
     #[cmd]
@@ -2300,6 +2311,7 @@ module econia::market {
         price: u64,
         restriction: u8,
         self_match_behavior: u8,
+        passive_advance_percentage: u8,
         critical_height: u8
     ): (
         u128,
@@ -2309,9 +2321,6 @@ module econia::market {
     ) acquires OrderBooks {
         // Assert valid order restriction flag.
         assert!(restriction <= N_RESTRICTIONS, E_INVALID_RESTRICTION);
-        assert!(price != 0, E_PRICE_0); // Assert nonzero price.
-        // Assert price is not too high.
-        assert!(price <= HI_PRICE, E_PRICE_TOO_HIGH);
         // Get user's available and ceiling asset counts.
         let (_, base_available, base_ceiling, _, quote_available,
              quote_ceiling) = user::get_asset_counts_internal(
@@ -2329,6 +2338,65 @@ module econia::market {
                 == order_book_ref_mut.quote_type, E_INVALID_QUOTE);
         // Assert order size is at least minimum size for market.
         assert!(size >= order_book_ref_mut.min_size, E_SIZE_TOO_SMALL);
+        // If a passive advance order:
+        if (restriction == PASSIVE_ADVANCE) {
+            // Assert specified advance percentage is valid.
+            assert!(passive_advance_percentage <= MAX_PERCENT,
+                    E_INVALID_PASSIVE_ADVANCE_PERCENTAGE);
+            // Get option-packed max bid and min ask prices.
+            let (max_bid_price, min_ask_price) =
+                (avl_queue::get_head_key(&order_book_ref_mut.bids),
+                 avl_queue::get_head_key(&order_book_ref_mut.asks));
+            // Get price for a passive join at the best price on the
+            // given side, and price on other side of the spread.
+            let (join_price_option, cross_price_option) = if (side == ASK)
+                (min_ask_price, max_bid_price) else
+                (max_bid_price, min_ask_price);
+            // If join price is some, update price accordingly:
+            if (option::is_some(&join_price_option)) {
+                // Get join price.
+                let join_price = *option::borrow(&join_price_option);
+                // If no passive advance specified:
+                if (passive_advance_percentage == 0) {
+                    // Price becomes passive join price.
+                    price = join_price;
+                } else { // If nonzero advance percentage:
+                    // If cross price is some:
+                    if (option::is_some(&cross_price_option)) {
+                        // Get cross price.
+                        let cross_price = *option::borrow(&cross_price_option);
+                        if (side == ASK) { // If passive advance ask:
+                            // Max advance price is just over best bid.
+                            let max_advance_price = cross_price + 1;
+                            // Calculate max advance.
+                            let max_advance = join_price - max_advance_price;
+                            // Calculate actual advance.
+                            let advance = max_advance
+                                * (passive_advance_percentage as u64)
+                                / (MAX_PERCENT as u64);
+                            // Update price accordingly.
+                            price = join_price - advance;
+                        } else { // If passive advance bid:
+                            // Max advance price is just under best ask.
+                            let max_advance_price = cross_price - 1;
+                            // Calculate max advance.
+                            let max_advance = max_advance_price - join_price;
+                            // Calculate actual advance.
+                            let advance = max_advance
+                                * (passive_advance_percentage as u64)
+                                / (MAX_PERCENT as u64);
+                            // Update price accordingly.
+                            price = join_price + advance;
+                        }
+                    }
+                }
+            };
+            // Default to post-or-abort activity.
+            restriction = POST_OR_ABORT;
+        };
+        assert!(price != 0, E_PRICE_0); // Assert nonzero price.
+        // Assert price is not too high.
+        assert!(price <= HI_PRICE, E_PRICE_TOO_HIGH);
         // Get market underwriter ID.
         let underwriter_id = order_book_ref_mut.underwriter_id;
         // Order crosses spread if an ask and would trail behind bids

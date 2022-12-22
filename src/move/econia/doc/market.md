@@ -1386,6 +1386,16 @@ Custodian not authorized for operation.
 
 
 
+<a name="0xc0deb00c_market_E_INVALID_PASSIVE_ADVANCE_PERCENTAGE"></a>
+
+Invalid passive advance percentage.
+
+
+<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_E_INVALID_PASSIVE_ADVANCE_PERCENTAGE">E_INVALID_PASSIVE_ADVANCE_PERCENTAGE</a>: u64 = 29;
+</code></pre>
+
+
+
 <a name="0xc0deb00c_market_E_INVALID_RESTRICTION"></a>
 
 Invalid restriction flag.
@@ -1576,6 +1586,16 @@ Flag for immediate-or-cancel order restriction.
 
 
 
+<a name="0xc0deb00c_market_MAX_PERCENT"></a>
+
+Maximum possible percentage.
+
+
+<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_MAX_PERCENT">MAX_PERCENT</a>: u8 = 100;
+</code></pre>
+
+
+
 <a name="0xc0deb00c_market_MAX_POSSIBLE"></a>
 
 Flag to trade max possible asset amount: <code>u64</code> bitmask with all
@@ -1613,7 +1633,17 @@ Flag for no order restriction.
 Number of restriction flags.
 
 
-<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_N_RESTRICTIONS">N_RESTRICTIONS</a>: u8 = 3;
+<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_N_RESTRICTIONS">N_RESTRICTIONS</a>: u8 = 4;
+</code></pre>
+
+
+
+<a name="0xc0deb00c_market_PASSIVE_ADVANCE"></a>
+
+Flag for passive join order restriction.
+
+
+<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_PASSIVE_ADVANCE">PASSIVE_ADVANCE</a>: u8 = 3;
 </code></pre>
 
 
@@ -1633,7 +1663,7 @@ Flag for <code><a href="market.md#0xc0deb00c_market_MakerEvent">MakerEvent</a>.t
 Flag for post-or-abort order restriction.
 
 
-<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_POST_OR_ABORT">POST_OR_ABORT</a>: u8 = 3;
+<pre><code><b>const</b> <a href="market.md#0xc0deb00c_market_POST_OR_ABORT">POST_OR_ABORT</a>: u8 = 4;
 </code></pre>
 
 
@@ -2305,7 +2335,7 @@ order under authority of delegated custodian.
 * <code>test_place_limit_order_no_cross_bid_custodian()</code>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order_custodian">place_limit_order_custodian</a>&lt;BaseType, QuoteType&gt;(user_address: <b>address</b>, market_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8, custodian_capability_ref: &<a href="registry.md#0xc0deb00c_registry_CustodianCapability">registry::CustodianCapability</a>): (u128, u64, u64, u64)
+<pre><code><b>public</b> <b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order_custodian">place_limit_order_custodian</a>&lt;BaseType, QuoteType&gt;(user_address: <b>address</b>, market_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8, passive_advance_percentage: u8, custodian_capability_ref: &<a href="registry.md#0xc0deb00c_registry_CustodianCapability">registry::CustodianCapability</a>): (u128, u64, u64, u64)
 </code></pre>
 
 
@@ -2325,6 +2355,7 @@ order under authority of delegated custodian.
     price: u64,
     restriction: u8,
     self_match_behavior: u8,
+    passive_advance_percentage: u8,
     custodian_capability_ref: &CustodianCapability
 ): (
     u128,
@@ -2345,6 +2376,7 @@ order under authority of delegated custodian.
         price,
         restriction,
         self_match_behavior,
+        passive_advance_percentage,
         <a href="market.md#0xc0deb00c_market_CRITICAL_HEIGHT">CRITICAL_HEIGHT</a>)
 }
 </code></pre>
@@ -2373,7 +2405,7 @@ order under authority of signing user.
 * <code>test_place_limit_order_no_cross_ask_user()</code>
 
 
-<pre><code><b>public</b> <b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order_user">place_limit_order_user</a>&lt;BaseType, QuoteType&gt;(<a href="user.md#0xc0deb00c_user">user</a>: &<a href="">signer</a>, market_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8): (u128, u64, u64, u64)
+<pre><code><b>public</b> <b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order_user">place_limit_order_user</a>&lt;BaseType, QuoteType&gt;(<a href="user.md#0xc0deb00c_user">user</a>: &<a href="">signer</a>, market_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8, passive_advance_percentage: u8): (u128, u64, u64, u64)
 </code></pre>
 
 
@@ -2392,7 +2424,8 @@ order under authority of signing user.
     size: u64,
     price: u64,
     restriction: u8,
-    self_match_behavior: u8
+    self_match_behavior: u8,
+    passive_advance_percentage: u8
 ): (
     u128,
     u64,
@@ -2412,6 +2445,7 @@ order under authority of signing user.
         price,
         restriction,
         self_match_behavior,
+        passive_advance_percentage,
         <a href="market.md#0xc0deb00c_market_CRITICAL_HEIGHT">CRITICAL_HEIGHT</a>)
 }
 </code></pre>
@@ -3275,7 +3309,7 @@ Public entry function wrapper for <code><a href="market.md#0xc0deb00c_market_pla
 * <code>test_place_limit_order_user_entry()</code>
 
 
-<pre><code><b>public</b> entry <b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order_user_entry">place_limit_order_user_entry</a>&lt;BaseType, QuoteType&gt;(<a href="user.md#0xc0deb00c_user">user</a>: &<a href="">signer</a>, market_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8)
+<pre><code><b>public</b> entry <b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order_user_entry">place_limit_order_user_entry</a>&lt;BaseType, QuoteType&gt;(<a href="user.md#0xc0deb00c_user">user</a>: &<a href="">signer</a>, market_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8, passive_advance_percentage: u8)
 </code></pre>
 
 
@@ -3294,11 +3328,12 @@ Public entry function wrapper for <code><a href="market.md#0xc0deb00c_market_pla
     size: u64,
     price: u64,
     restriction: u8,
-    self_match_behavior: u8
+    self_match_behavior: u8,
+    passive_advance_percentage: u8
 ) <b>acquires</b> <a href="market.md#0xc0deb00c_market_OrderBooks">OrderBooks</a> {
     <a href="market.md#0xc0deb00c_market_place_limit_order_user">place_limit_order_user</a>&lt;BaseType, QuoteType&gt;(
         <a href="user.md#0xc0deb00c_user">user</a>, market_id, integrator, side, size, price, restriction,
-        self_match_behavior);
+        self_match_behavior, passive_advance_percentage);
 }
 </code></pre>
 
@@ -4238,7 +4273,7 @@ again for the maker portion.
 * <code>test_place_limit_order_ticks_overflow()</code>
 
 
-<pre><code><b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order">place_limit_order</a>&lt;BaseType, QuoteType&gt;(user_address: <b>address</b>, market_id: u64, custodian_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8, critical_height: u8): (u128, u64, u64, u64)
+<pre><code><b>fun</b> <a href="market.md#0xc0deb00c_market_place_limit_order">place_limit_order</a>&lt;BaseType, QuoteType&gt;(user_address: <b>address</b>, market_id: u64, custodian_id: u64, integrator: <b>address</b>, side: bool, size: u64, price: u64, restriction: u8, self_match_behavior: u8, passive_advance_percentage: u8, critical_height: u8): (u128, u64, u64, u64)
 </code></pre>
 
 
@@ -4259,6 +4294,7 @@ again for the maker portion.
     price: u64,
     restriction: u8,
     self_match_behavior: u8,
+    passive_advance_percentage: u8,
     critical_height: u8
 ): (
     u128,
@@ -4268,9 +4304,6 @@ again for the maker portion.
 ) <b>acquires</b> <a href="market.md#0xc0deb00c_market_OrderBooks">OrderBooks</a> {
     // Assert valid order restriction flag.
     <b>assert</b>!(restriction &lt;= <a href="market.md#0xc0deb00c_market_N_RESTRICTIONS">N_RESTRICTIONS</a>, <a href="market.md#0xc0deb00c_market_E_INVALID_RESTRICTION">E_INVALID_RESTRICTION</a>);
-    <b>assert</b>!(price != 0, <a href="market.md#0xc0deb00c_market_E_PRICE_0">E_PRICE_0</a>); // Assert nonzero price.
-    // Assert price is not too high.
-    <b>assert</b>!(price &lt;= <a href="market.md#0xc0deb00c_market_HI_PRICE">HI_PRICE</a>, <a href="market.md#0xc0deb00c_market_E_PRICE_TOO_HIGH">E_PRICE_TOO_HIGH</a>);
     // Get <a href="user.md#0xc0deb00c_user">user</a>'s available and ceiling asset counts.
     <b>let</b> (_, base_available, base_ceiling, _, quote_available,
          quote_ceiling) = <a href="user.md#0xc0deb00c_user_get_asset_counts_internal">user::get_asset_counts_internal</a>(
@@ -4288,6 +4321,65 @@ again for the maker portion.
             == order_book_ref_mut.quote_type, <a href="market.md#0xc0deb00c_market_E_INVALID_QUOTE">E_INVALID_QUOTE</a>);
     // Assert order size is at least minimum size for <a href="market.md#0xc0deb00c_market">market</a>.
     <b>assert</b>!(size &gt;= order_book_ref_mut.min_size, <a href="market.md#0xc0deb00c_market_E_SIZE_TOO_SMALL">E_SIZE_TOO_SMALL</a>);
+    // If a passive advance order:
+    <b>if</b> (restriction == <a href="market.md#0xc0deb00c_market_PASSIVE_ADVANCE">PASSIVE_ADVANCE</a>) {
+        // Assert specified advance percentage is valid.
+        <b>assert</b>!(passive_advance_percentage &lt;= <a href="market.md#0xc0deb00c_market_MAX_PERCENT">MAX_PERCENT</a>,
+                <a href="market.md#0xc0deb00c_market_E_INVALID_PASSIVE_ADVANCE_PERCENTAGE">E_INVALID_PASSIVE_ADVANCE_PERCENTAGE</a>);
+        // Get <a href="">option</a>-packed max bid and <b>min</b> ask prices.
+        <b>let</b> (max_bid_price, min_ask_price) =
+            (<a href="avl_queue.md#0xc0deb00c_avl_queue_get_head_key">avl_queue::get_head_key</a>(&order_book_ref_mut.bids),
+             <a href="avl_queue.md#0xc0deb00c_avl_queue_get_head_key">avl_queue::get_head_key</a>(&order_book_ref_mut.asks));
+        // Get price for a passive join at the best price on the
+        // given side, and price on other side of the spread.
+        <b>let</b> (join_price_option, cross_price_option) = <b>if</b> (side == <a href="market.md#0xc0deb00c_market_ASK">ASK</a>)
+            (min_ask_price, max_bid_price) <b>else</b>
+            (max_bid_price, min_ask_price);
+        // If join price is some, <b>update</b> price accordingly:
+        <b>if</b> (<a href="_is_some">option::is_some</a>(&join_price_option)) {
+            // Get join price.
+            <b>let</b> join_price = *<a href="_borrow">option::borrow</a>(&join_price_option);
+            // If no passive advance specified:
+            <b>if</b> (passive_advance_percentage == 0) {
+                // Price becomes passive join price.
+                price = join_price;
+            } <b>else</b> { // If nonzero advance percentage:
+                // If cross price is some:
+                <b>if</b> (<a href="_is_some">option::is_some</a>(&cross_price_option)) {
+                    // Get cross price.
+                    <b>let</b> cross_price = *<a href="_borrow">option::borrow</a>(&cross_price_option);
+                    <b>if</b> (side == <a href="market.md#0xc0deb00c_market_ASK">ASK</a>) { // If passive advance ask:
+                        // Max advance price is just over best bid.
+                        <b>let</b> max_advance_price = cross_price + 1;
+                        // Calculate max advance.
+                        <b>let</b> max_advance = join_price - max_advance_price;
+                        // Calculate actual advance.
+                        <b>let</b> advance = max_advance
+                            * (passive_advance_percentage <b>as</b> u64)
+                            / (<a href="market.md#0xc0deb00c_market_MAX_PERCENT">MAX_PERCENT</a> <b>as</b> u64);
+                        // Update price accordingly.
+                        price = join_price - advance;
+                    } <b>else</b> { // If passive advance bid:
+                        // Max advance price is just under best ask.
+                        <b>let</b> max_advance_price = cross_price - 1;
+                        // Calculate max advance.
+                        <b>let</b> max_advance = max_advance_price - join_price;
+                        // Calculate actual advance.
+                        <b>let</b> advance = max_advance
+                            * (passive_advance_percentage <b>as</b> u64)
+                            / (<a href="market.md#0xc0deb00c_market_MAX_PERCENT">MAX_PERCENT</a> <b>as</b> u64);
+                        // Update price accordingly.
+                        price = join_price + advance;
+                    }
+                }
+            }
+        };
+        // Default <b>to</b> <b>post</b>-or-<b>abort</b> activity.
+        restriction = <a href="market.md#0xc0deb00c_market_POST_OR_ABORT">POST_OR_ABORT</a>;
+    };
+    <b>assert</b>!(price != 0, <a href="market.md#0xc0deb00c_market_E_PRICE_0">E_PRICE_0</a>); // Assert nonzero price.
+    // Assert price is not too high.
+    <b>assert</b>!(price &lt;= <a href="market.md#0xc0deb00c_market_HI_PRICE">HI_PRICE</a>, <a href="market.md#0xc0deb00c_market_E_PRICE_TOO_HIGH">E_PRICE_TOO_HIGH</a>);
     // Get <a href="market.md#0xc0deb00c_market">market</a> underwriter ID.
     <b>let</b> underwriter_id = order_book_ref_mut.underwriter_id;
     // <a href="market.md#0xc0deb00c_market_Order">Order</a> crosses spread <b>if</b> an ask and would trail behind bids
